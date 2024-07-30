@@ -1,3 +1,18 @@
+
+puts "Debugging gemspec file"
+require "json"
+begin
+  puts "Current directory: #{Dir.pwd}"
+  puts "package.json exists: #{File.exist?('package.json')}"
+  package_json_content = File.read("package.json")
+  puts "package.json content: #{package_json_content}"
+  package_json = JSON.parse(package_json_content)
+  puts "Successfully parsed package.json"
+  puts "Version: #{package_json["version"]}"
+rescue => e
+  puts "Error reading or parsing package.json: #{e.message}"
+  puts "Error backtrace: #{e.backtrace.join("\n")}"
+end
 require "json"
 
 package_json = JSON.parse(File.read("package.json"))
