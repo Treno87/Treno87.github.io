@@ -1,10 +1,11 @@
-
 puts "Debugging gemspec file"
 require "json"
 begin
   puts "Current directory: #{Dir.pwd}"
-  puts "package.json exists: #{File.exist?('package.json')}"
-  package_json_content = File.read("package.json")
+  package_json_path = File.expand_path('../package.json', __FILE__)
+  puts "package.json path: #{package_json_path}"
+  puts "package.json exists: #{File.exist?(package_json_path)}"
+  package_json_content = File.read(package_json_path)
   puts "package.json content: #{package_json_content}"
   package_json = JSON.parse(package_json_content)
   puts "Successfully parsed package.json"
@@ -12,10 +13,9 @@ begin
 rescue => e
   puts "Error reading or parsing package.json: #{e.message}"
   puts "Error backtrace: #{e.backtrace.join("\n")}"
+  # Fallback to hardcoded version if package.json can't be read
+  package_json = {"version" => "4.26.2"}
 end
-require "json"
-
-package_json = JSON.parse(File.read("package.json"))
 
 Gem::Specification.new do |spec|
   spec.name                    = "minimal-mistakes-jekyll"
